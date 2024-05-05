@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Player = ({ name, symbol }) => {
+const Player = ({ name, symbol, isActive}) => {
   const [isEdit, SetEdit] = useState(false);
   const [playerName, SetPlayerName] = useState(name);
   const handleChange = (event) => {
@@ -17,7 +17,7 @@ const Player = ({ name, symbol }) => {
     button = 'save'
   }
   return (
-    <li>
+    <li className={isActive ? "active": undefined}>
       <span className="player">
         {editablePlayerName}
         <span className="player-symbol">{symbol}</span>
