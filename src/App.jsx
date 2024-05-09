@@ -34,7 +34,7 @@ function App() {
         </ol>
         <GameBoard onSelectSquare={handleLogs} turns={currentTurns} />
       </div>
-
+      <Log turns={currentTurns}/>
     </main>
   );
 }
