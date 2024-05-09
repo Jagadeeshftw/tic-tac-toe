@@ -6,12 +6,18 @@ import Log from "../components/Log";
 function App() {
   const [currentTurns, setCurrentTurns] = useState([]);
   const [activePlayer, setActivePlayer] = useState("O");
-  const handleLogs = (rowIndex, colIndex) => {
+  const handleLogs = (rowIndex, 
+    colIndex) => {
     setActivePlayer((curActivePlayer) => (curActivePlayer === "X" ? "O" : "X"));
 
     setCurrentTurns((currentTurns) => {
       let currentPlayer = "X";
-      if (activePlayer === "X") currentPlayer = "O";
+      console.log(currentTurns);
+      if(currentTurns.length >0 && currentTurns[0].player === "X")
+        {
+          console.log('Hello');
+          currentPlayer= "O";
+        }
       const updatedTurns = [
         { square: { row: rowIndex, col: colIndex }, player: currentPlayer },
         ...currentTurns,
@@ -28,7 +34,7 @@ function App() {
         </ol>
         <GameBoard onSelectSquare={handleLogs} turns={currentTurns} />
       </div>
-      <Log/>
+
     </main>
   );
 }
