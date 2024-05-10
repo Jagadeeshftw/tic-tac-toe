@@ -3,6 +3,7 @@ import GameBoard from "../components/GameBoard";
 import Player from "../components/Player";
 import Log from "../components/Log";
 import { WINNING_COMBINATIONS } from "./WinningCombinations";
+import GameOver from "../components/GameOver";
 
 
 
@@ -12,12 +13,10 @@ const initialBoard = [
   [null, null, null],
 ];
 
-
-
 function App() {
   const [currentTurns, setCurrentTurns] = useState([]);
   
-let updatedBoard = initialBoard;
+let updatedBoard = [...initialBoard.map(array =>[...array])];
 for (const turn of currentTurns) {
   const { square, player } = turn;
   const { row, col } = square;
@@ -33,6 +32,8 @@ for(let combinations of WINNING_COMBINATIONS)
   if(firstSymbol && firstSymbol === secondSymbol && secondSymbol === thirdSymbol)
     winner = firstSymbol;
 }
+
+   let hasDraw = !winner && currentTurns.length === 9;
 
   const getActivePlayer = (currentTurns) =>{
     let currentPlayer = 'X';
@@ -55,6 +56,10 @@ for(let combinations of WINNING_COMBINATIONS)
       return updatedTurns;
     });
   };
+
+  const handleRestart = () =>{
+    setCurrentTurns([]);
+  }
   return (
     <main>
       <div id="game-container">
@@ -62,7 +67,7 @@ for(let combinations of WINNING_COMBINATIONS)
           <Player name="Player1" symbol="X" isActive={activePlayer === "X"} />
           <Player name="Player2" symbol="O" isActive={activePlayer === "O"} />
         </ol>
-        {winner && <p>you won {winner}</p>}
+        {(winner || hasDraw) && <GameOver winner={winner} onSelect={handleRestart}/>}
         <GameBoard onSelectSquare={handleLogs} turns={currentTurns} gameBoard={updatedBoard}/>
       </div>
       <Log turns={currentTurns}/>
