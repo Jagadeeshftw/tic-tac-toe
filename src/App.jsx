@@ -5,22 +5,24 @@ import Log from "../components/Log";
 
 function App() {
   const [currentTurns, setCurrentTurns] = useState([]);
-  const [activePlayer, setActivePlayer] = useState("O");
-  const handleLogs = (rowIndex, 
-    colIndex) => {
-    setActivePlayer((curActivePlayer) => (curActivePlayer === "X" ? "O" : "X"));
+  
 
-    setCurrentTurns((currentTurns) => {
-      let currentPlayer = "X";
-      console.log(currentTurns);
-      if(currentTurns.length >0 && currentTurns[0].player === "X")
-        {
-          console.log('Hello');
-          currentPlayer= "O";
-        }
+  const getActivePlayer = (currentTurns) =>{
+    let currentPlayer = 'X';
+
+    if (currentTurns.length > 0 && currentTurns[0].player === 'X') {
+      currentPlayer = 'O';
+    }
+    return currentPlayer;
+  }
+  const activePlayer = getActivePlayer(currentTurns);
+  const handleLogs = (rowIndex, colIndex) => {
+    
+    setCurrentTurns((gameTurns) => {
+      let currentPlayer = getActivePlayer(gameTurns);
       const updatedTurns = [
         { square: { row: rowIndex, col: colIndex }, player: currentPlayer },
-        ...currentTurns,
+        ...gameTurns,
       ];
       return updatedTurns;
     });
