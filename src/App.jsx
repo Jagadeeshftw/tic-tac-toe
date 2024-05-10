@@ -5,7 +5,10 @@ import Log from "../components/Log";
 import { WINNING_COMBINATIONS } from "./WinningCombinations";
 import GameOver from "../components/GameOver";
 
-
+const PLAYERS = {
+  X: 'Player 1',
+  O: 'Player 2'
+};
 
 const initialBoard = [
   [null, null, null],
@@ -14,6 +17,8 @@ const initialBoard = [
 ];
 
 function App() {
+
+  const [player,setPlayer] = useState(PLAYERS);
   const [currentTurns, setCurrentTurns] = useState([]);
   
 let updatedBoard = [...initialBoard.map(array =>[...array])];
@@ -30,7 +35,7 @@ for(let combinations of WINNING_COMBINATIONS)
   const thirdSymbol = updatedBoard[combinations[2].row][combinations[2].column]
 
   if(firstSymbol && firstSymbol === secondSymbol && secondSymbol === thirdSymbol)
-    winner = firstSymbol;
+    winner = player[firstSymbol];
 }
 
    let hasDraw = !winner && currentTurns.length === 9;
@@ -56,7 +61,11 @@ for(let combinations of WINNING_COMBINATIONS)
       return updatedTurns;
     });
   };
-
+  const handlePlayerNameChange =(symbol, playername) =>{
+       setPlayer(prePlayer => 
+        {return {...prePlayer, [symbol] : playername}}
+       );
+  }
   const handleRestart = () =>{
     setCurrentTurns([]);
   }
@@ -64,8 +73,8 @@ for(let combinations of WINNING_COMBINATIONS)
     <main>
       <div id="game-container">
         <ol id="players" className="highlight-player">
-          <Player name="Player1" symbol="X" isActive={activePlayer === "X"} />
-          <Player name="Player2" symbol="O" isActive={activePlayer === "O"} />
+          <Player name={PLAYERS.X} symbol="X" isActive={activePlayer === "X"} onNameChange={handlePlayerNameChange}/>
+          <Player name={PLAYERS.O} symbol="O" isActive={activePlayer === "O"} />
         </ol>
         {(winner || hasDraw) && <GameOver winner={winner} onSelect={handleRestart}/>}
         <GameBoard onSelectSquare={handleLogs} turns={currentTurns} gameBoard={updatedBoard}/>

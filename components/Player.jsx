@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Player = ({ name, symbol, isActive}) => {
+const Player = ({ name, symbol, isActive, onNameChange}) => {
   const [isEdit, SetEdit] = useState(false);
   const [playerName, SetPlayerName] = useState(name);
   const handleChange = (event) => {
@@ -8,6 +8,11 @@ const Player = ({ name, symbol, isActive}) => {
   }
   const handleClick = () => {
     SetEdit(edit => !edit);
+
+    if(isEdit)
+      {
+        onNameChange(symbol, playerName);
+      }
   }
   let editablePlayerName = <span className="player-name">{playerName}</span>;
   let button = 'edit'
